@@ -2,8 +2,12 @@
   lib',
   lib,
   inputs,
+  pkgs,
   ...
 }:
+let
+  python = pkgs.python3.withPackages (ps: with ps; [ pip ]);
+in
 {
   imports = lib'.flocken.getModules ./.;
   # networking.useDHCP = false;
@@ -13,6 +17,11 @@
   powerManagement.enable = false;
 
   documentation.nixos.enable = false;
+
+  # HACK: Otherwise, PyCharm will not find the Python interpreter
+  system.activationScripts.python.text = ''
+    ln -s ${python}/bin/* /usr/bin/
+  '';
 
   nixpkgs = {
     overlays = [ inputs.nix-vscode-extensions.overlays.default ];
