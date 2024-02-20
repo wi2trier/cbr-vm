@@ -11,6 +11,7 @@
     PYCHARM_PYTHON_PATH = lib.getExe pkgs.python3;
   };
   programs = {
+    bash.enable = true;
     git.enable = true;
     chromium.enable = true;
     neovim = {
