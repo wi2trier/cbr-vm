@@ -2,7 +2,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    systems.url = "github:nix-systems/default";
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,6 +34,7 @@
       { lib, ... }:
       let
         specialArgs = {
+          inherit inputs;
           lib' = {
             flocken = flocken.lib;
           };
@@ -54,36 +54,25 @@
         system = "x86_64-linux";
       in
       {
-        systems = import systems;
+        systems = [ system ];
         flake = {
           nixosConfigurations = {
-            default = nixpkgs.lib.nixosSystem { inherit modules system specialArgs; };
+            base = nixpkgs.lib.nixosSystem { inherit modules system specialArgs; };
             virtualbox = nixpkgs.lib.nixosSystem {
               inherit system specialArgs;
               modules = modules ++ lib.singleton ./profiles/virtualbox.nix;
             };
-            # https://www.tweag.io/blog/2023-02-09-nixos-vm-on-macos/
-            darwinvm = nixpkgs.lib.nixosSystem {
-              inherit system specialArgs;
-              modules =
-                modules
-                ++ lib.singleton {
-                  virtualisation.vmVariant.virtualisation.host.pkgs = import nixpkgs { system = "x86_64-darwin"; };
-                };
-            };
-          };
-          packages.x86_64-linux = {
-            default = self.nixosConfigurations.default.config.system.build.vm;
-            virtualbox = self.nixosConfigurations.virtualbox.config.system.build.virtualBoxOVA;
-            # virtualbox = nixos-generators.nixosGenerate {
-            #   inherit system modules;
-            #   format = "virtualbox";
-            # };
-          };
-          packages.x86_64-darwin = {
-            default = self.nixosConfigurations.darwinvm.config.system.build.vm;
           };
         };
+        perSystem =
+          { config, ... }:
+          {
+            packages = {
+              default = config.packages.vm;
+              vm = self.nixosConfigurations.default.config.system.build.vm;
+              virtualbox = self.nixosConfigurations.virtualbox.config.system.build.virtualBoxOVA;
+            };
+          };
       }
     );
 }
