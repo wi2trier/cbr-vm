@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   home.packages = with pkgs; [
     python3
@@ -26,12 +31,10 @@
     vscode = {
       enable = true;
       package = pkgs.vscode-fhs;
-      mutableExtensionsDir = true;
+      mutableExtensionsDir = false;
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = false;
       extensions = with (pkgs.forVSCodeVersion pkgs.vscode.version).vscode-marketplace; [
-        visualstudioexptteam.vscodeintellicode
-        visualstudioexptteam.vscodeintellicode-completions
         ms-python.python
         ms-python.vscode-pylance
         ms-python.debugpy
@@ -40,6 +43,8 @@
         vscjava.vscode-java-debug
         vscjava.vscode-maven
         vscjava.vscode-gradle
+        vscjava.vscode-java-dependency
+        vscjava.vscode-java-test
       ];
       userSettings = {
         "[python]"."editor.defaultFormatter" = "charliermarsh.ruff";
@@ -49,6 +54,8 @@
         "java.configuration.updateBuildConfiguration" = "automatic";
         "java.format.enabled" = true;
         "java.saveActions.organizeImports" = false;
+        "java.jdt.ls.java.home" = config.programs.java.package.home;
+        "extensions.ignoreRecommendations" = true;
       };
     };
   };
