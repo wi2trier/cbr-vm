@@ -4,7 +4,12 @@
     inputs.cbrkit.packages.${pkgs.system}.default.dependencyEnv
     maven
     gradle
+    jetbrains.idea-community
+    jetbrains.pycharm-community
   ];
+  home.sessionVariables = {
+    PYCHARM_PYTHON_PATH = lib.getExe pkgs.python3;
+  };
   programs = {
     git.enable = true;
     chromium.enable = true;
