@@ -1,8 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
+  home.packages = with pkgs; [
+    inputs.cbrkit.packages.${pkgs.system}.default.dependencyEnv
+    maven
+    gradle
+  ];
   programs = {
     chromium.enable = true;
-    foot.enable = true;
+    java = {
+      enable = true;
+      package = pkgs.jdk17;
+    };
     vscode = {
       enable = true;
       package = pkgs.vscode-fhs;
