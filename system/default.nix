@@ -1,4 +1,9 @@
-{ lib', lib, ... }:
+{
+  lib',
+  lib,
+  inputs,
+  ...
+}:
 {
   imports = lib'.flocken.getModules ./.;
   # networking.useDHCP = false;
@@ -9,8 +14,11 @@
 
   programs.git.enable = true;
 
-  nixpkgs.config = {
-    allowUnfree = true;
+  nixpkgs = {
+    overlays = [ inputs.nix-vscode-extensions.overlays.default ];
+    config = {
+      allowUnfree = true;
+    };
   };
 
   nix = {

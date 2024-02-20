@@ -34,18 +34,6 @@ in
   home = {
     packages = gnomeExtensions ++ (lib.mapAttrsToList mkDesktopLink desktopLinks);
   };
-  programs = {
-    chromium = {
-      enable = true;
-    };
-    vscode = {
-      enable = true;
-      package = pkgs.vscode-fhs;
-    };
-    foot = {
-      enable = true;
-    };
-  };
   gtk = {
     enable = true;
     iconTheme.name = "Adwaita";
