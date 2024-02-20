@@ -6,7 +6,13 @@
     gradle
   ];
   programs = {
+    git.enable = true;
     chromium.enable = true;
+    neovim = {
+      enable = true;
+      viAlias = true;
+      vimAlias = true;
+    };
     java = {
       enable = true;
       package = pkgs.jdk17;

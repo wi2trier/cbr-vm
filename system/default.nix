@@ -12,8 +12,6 @@
   system.stateVersion = lib.trivial.release;
   powerManagement.enable = false;
 
-  programs.git.enable = true;
-
   documentation.nixos.enable = false;
 
   nixpkgs = {
