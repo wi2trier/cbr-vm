@@ -14,6 +14,8 @@
 
   programs.git.enable = true;
 
+  documentation.nixos.enable = false;
+
   nixpkgs = {
     overlays = [ inputs.nix-vscode-extensions.overlays.default ];
     config = {

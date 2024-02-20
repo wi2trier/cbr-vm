@@ -4,10 +4,11 @@
     sessionVariables.NIXOS_OZONE_WL = "1";
     systemPackages = with pkgs.gnome; [
       nautilus
+      gnome-terminal
       gnome-system-monitor
       dconf-editor
-      yelp
     ];
+    gnome.excludePackages = with pkgs; [ gnome-tour ];
   };
   services.xserver = {
     enable = true;

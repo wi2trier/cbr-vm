@@ -46,6 +46,7 @@ in
       enabled-extensions = map (ext: ext.extensionUuid) gnomeExtensions;
       favorite-apps = [
         "org.gnome.Nautilus.desktop"
+        "org.gnome.Terminal.desktop"
         "chromium-browser.desktop"
         "code.desktop"
       ] ++ map (name: "${name}.desktop") (builtins.attrNames desktopLinks);
