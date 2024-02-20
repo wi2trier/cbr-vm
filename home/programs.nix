@@ -1,7 +1,7 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
-    inputs.cbrkit.packages.${pkgs.system}.default.dependencyEnv
+    python3
     maven
     gradle
     jetbrains.idea-community
