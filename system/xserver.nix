@@ -1,13 +1,14 @@
 { pkgs, ... }:
 {
-  environment.systemPackages = with pkgs.gnome; [
-    gnome-tweaks
-    nautilus
-    gnome-system-monitor
-    dconf-editor
-    yelp
-  ];
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment = {
+    sessionVariables.NIXOS_OZONE_WL = "1";
+    systemPackages = with pkgs.gnome; [
+      nautilus
+      gnome-system-monitor
+      dconf-editor
+      yelp
+    ];
+  };
   services.xserver = {
     enable = true;
     desktopManager = {
