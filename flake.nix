@@ -14,6 +14,10 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -23,6 +27,7 @@
       systems,
       home-manager,
       flocken,
+      nixos-generators,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } (
@@ -37,6 +42,7 @@
         modules = [
           ./system
           home-manager.nixosModules.home-manager
+          nixos-generators.nixosModules.all-formats
           {
             home-manager = {
               useGlobalPkgs = true;
@@ -52,22 +58,17 @@
         systems = [ system ];
         flake = {
           nixosConfigurations = {
-            base = nixpkgs.lib.nixosSystem { inherit modules system specialArgs; };
             virtualbox = nixpkgs.lib.nixosSystem {
               inherit system specialArgs;
-              modules = modules ++ lib.singleton ./profiles/virtualbox.nix;
+              modules = modules ++ lib.singleton "${nixpkgs}/nixos/modules/virtualisation/virtualbox-image.nix";
             };
           };
+          legacyPackages.${system} =
+            let
+              nixosSystem = nixpkgs.lib.nixosSystem { inherit modules system specialArgs; };
+            in
+            nixosSystem.config.formats;
         };
-        perSystem =
-          { config, ... }:
-          {
-            packages = {
-              default = config.packages.vm;
-              vm = self.nixosConfigurations.default.config.system.build.vm;
-              virtualbox = self.nixosConfigurations.virtualbox.config.system.build.virtualBoxOVA;
-            };
-          };
       }
     );
 }
