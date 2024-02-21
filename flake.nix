@@ -6,16 +6,8 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flocken = {
       url = "github:mirkolenz/flocken/v2";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    cbrkit = {
-      url = "github:wi2trier/cbrkit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-vscode-extensions = {
@@ -30,7 +22,6 @@
       flake-parts,
       systems,
       home-manager,
-      nixos-generators,
       flocken,
       ...
     }:
