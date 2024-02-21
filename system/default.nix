@@ -10,11 +10,10 @@ let
 in
 {
   imports = lib'.flocken.getModules ./.;
-  # networking.useDHCP = false;
-  # networking.firewall.enable = false;
 
   system.stateVersion = lib.trivial.release;
   powerManagement.enable = false;
+  time.timeZone = "Europe/Berlin";
 
   documentation.nixos.enable = false;
 
@@ -42,6 +41,4 @@ in
       ];
     };
   };
-
-  time.timeZone = "Europe/Berlin";
 }

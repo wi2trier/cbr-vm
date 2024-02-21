@@ -1,9 +1,9 @@
 { ... }:
 {
   networking = {
-    networkmanager.enable = true;
     useNetworkd = true;
+    useDHCP = false;
+    firewall.enable = false;
   };
   systemd.network.wait-online.enable = false;
-  users.users.guest.extraGroups = [ "networkmanager" ];
 }
