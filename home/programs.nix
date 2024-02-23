@@ -1,12 +1,12 @@
 { pkgs, config, ... }:
 {
   home.packages = with pkgs; [
+    poetry
     python3
     maven
     gradle
     jetbrains.idea-community
     jetbrains.pycharm-community
-    poetry
   ];
   programs = {
     bash.enable = true;
