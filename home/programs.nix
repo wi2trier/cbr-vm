@@ -1,5 +1,8 @@
 { pkgs, config, ... }:
 {
+  home.sessionVariables = {
+    POETRY_VIRTUALENVS_IN_PROJECT = true;
+  };
   home.packages = with pkgs; [
     poetry
     python3
