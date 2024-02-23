@@ -39,35 +39,36 @@
             flocken = flocken.lib;
           };
         };
-        modules = [
-          ./system
-          home-manager.nixosModules.home-manager
-          nixos-generators.nixosModules.all-formats
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = specialArgs;
-              users.guest.imports = [ ./home ];
-            };
-          }
-        ];
+        mkSystem =
+          module:
+          nixpkgs.lib.nixosSystem {
+            inherit system specialArgs;
+            modules = [
+              module
+              ./system
+              home-manager.nixosModules.home-manager
+              nixos-generators.nixosModules.all-formats
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  extraSpecialArgs = specialArgs;
+                  users.guest.imports = [ ./home ];
+                };
+              }
+            ];
+          };
+        defaultSystem = mkSystem { };
         system = "x86_64-linux";
       in
       {
         systems = [ system ];
         flake = {
           nixosConfigurations = {
-            virtualbox = nixpkgs.lib.nixosSystem {
-              inherit system specialArgs;
-              modules = modules ++ lib.singleton "${nixpkgs}/nixos/modules/virtualisation/virtualbox-image.nix";
-            };
+            virtualbox = mkSystem "${nixpkgs}/nixos/modules/virtualisation/virtualbox-image.nix";
+            proxmox = mkSystem "${nixpkgs}/nixos/modules/virtualisation/proxmox-image.nix";
           };
-          legacyPackages.${system} =
-            let
-              nixosSystem = nixpkgs.lib.nixosSystem { inherit modules system specialArgs; };
-            in
-            nixosSystem.config.formats;
+          legacyPackages.${system} = defaultSystem.config.formats;
         };
       }
     );
