@@ -20,7 +20,13 @@ in
             action.id == "org.freedesktop.login1.reboot" ||
             action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
             action.id == "org.freedesktop.login1.power-off" ||
-            action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+            action.id == "org.freedesktop.login1.power-off-multiple-sessions" ||
+            action.id == "org.freedesktop.color-manager.create-device" ||
+            action.id == "org.freedesktop.color-manager.create-profile" ||
+            action.id == "org.freedesktop.color-manager.delete-device" ||
+            action.id == "org.freedesktop.color-manager.delete-profile" ||
+            action.id == "org.freedesktop.color-manager.modify-device" ||
+            action.id == "org.freedesktop.color-manager.modify-profile"
           )
         )
       {
