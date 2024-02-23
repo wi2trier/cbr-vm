@@ -1,6 +1,7 @@
 { ... }:
 {
   networking = {
+    firewall.enable = true;
     useNetworkd = true;
     useDHCP = false;
   };
