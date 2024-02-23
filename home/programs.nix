@@ -1,9 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
+{ pkgs, config, ... }:
 {
   home.packages = with pkgs; [
     python3
@@ -12,9 +7,6 @@
     jetbrains.idea-community
     jetbrains.pycharm-community
   ];
-  home.sessionVariables = {
-    PYCHARM_PYTHON_PATH = lib.getExe pkgs.python3;
-  };
   programs = {
     bash.enable = true;
     git.enable = true;
