@@ -14,10 +14,6 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
   outputs =
     inputs@{
@@ -27,27 +23,27 @@
       systems,
       home-manager,
       flocken,
-      nixos-generators,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } (
       { lib, ... }:
       let
+        system = "x86_64-linux";
         specialArgs = {
           inherit inputs;
           lib' = {
             flocken = flocken.lib;
           };
         };
-        mkSystem =
-          module:
+        mkNixosConfiguration =
+          name:
+          { module, ... }:
           nixpkgs.lib.nixosSystem {
             inherit system specialArgs;
             modules = [
               module
               ./system
               home-manager.nixosModules.home-manager
-              nixos-generators.nixosModules.all-formats
               {
                 home-manager = {
                   useGlobalPkgs = true;
@@ -58,17 +54,25 @@
               }
             ];
           };
-        defaultSystem = mkSystem { };
-        system = "x86_64-linux";
+        mkNixosGenerator =
+          name: { generator, ... }: self.nixosConfigurations.${name}.config.system.build.${generator};
+
+        configurations = {
+          virtualbox = {
+            module = "${nixpkgs}/nixos/modules/virtualisation/virtualbox-image.nix";
+            generator = "virtualboxOVA";
+          };
+          proxmox = {
+            module = "${nixpkgs}/nixos/modules/virtualisation/proxmox-image.nix";
+            generator = "VMA";
+          };
+        };
       in
       {
         systems = [ system ];
         flake = {
-          nixosConfigurations = {
-            virtualbox = mkSystem "${nixpkgs}/nixos/modules/virtualisation/virtualbox-image.nix";
-            proxmox = mkSystem "${nixpkgs}/nixos/modules/virtualisation/proxmox-image.nix";
-          };
-          legacyPackages.${system} = defaultSystem.config.formats;
+          nixosConfigurations = builtins.mapAttrs mkNixosConfiguration configurations;
+          legacyPackages.${system} = builtins.mapAttrs mkNixosGenerator configurations;
         };
       }
     );
