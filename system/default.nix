@@ -2,12 +2,8 @@
   lib',
   lib,
   inputs,
-  pkgs,
   ...
 }:
-let
-  python = pkgs.python3.withPackages (ps: with ps; [ pip ]);
-in
 {
   imports = lib'.flocken.getModules ./.;
 
@@ -16,11 +12,6 @@ in
   time.timeZone = "Europe/Berlin";
 
   documentation.nixos.enable = false;
-
-  # HACK: Otherwise, PyCharm will not find the Python interpreter
-  system.activationScripts.python.text = ''
-    ln -fs ${lib.getExe python} /usr/bin/python3
-  '';
 
   nixpkgs = {
     overlays = [ inputs.nix-vscode-extensions.overlays.default ];
