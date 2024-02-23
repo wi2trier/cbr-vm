@@ -6,6 +6,7 @@
     gradle
     jetbrains.idea-community
     jetbrains.pycharm-community
+    poetry
   ];
   programs = {
     bash.enable = true;
