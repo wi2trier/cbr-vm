@@ -1,5 +1,5 @@
-{ lib', ... }:
+{ lib, lib', ... }:
 {
   imports = lib'.flocken.getModules ./.;
-  home.stateVersion = "23.11";
+  home.stateVersion = lib.trivial.release;
 }
