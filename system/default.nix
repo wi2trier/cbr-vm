@@ -19,7 +19,7 @@ in
 
   # HACK: Otherwise, PyCharm will not find the Python interpreter
   system.activationScripts.python.text = ''
-    ln -fs ${python}/bin/* /usr/bin/
+    ln -fs ${lib.getExe python} /usr/bin/python3
   '';
 
   nixpkgs = {
