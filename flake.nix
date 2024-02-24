@@ -35,13 +35,12 @@
             flocken = flocken.lib;
           };
         };
-        mkNixosConfiguration =
-          name:
-          { module, ... }:
+        mkConfig =
+          name: value:
           nixpkgs.lib.nixosSystem {
             inherit system specialArgs;
             modules = [
-              module
+              ./formats/${name}.nix
               ./system
               home-manager.nixosModules.home-manager
               {
@@ -54,25 +53,18 @@
               }
             ];
           };
-        mkNixosGenerator =
-          name: { generator, ... }: self.nixosConfigurations.${name}.config.system.build.${generator};
+        mkPackage = name: value: self.nixosConfigurations.${name}.config.system.build.${value};
 
-        configurations = {
-          virtualbox = {
-            module = "${nixpkgs}/nixos/modules/virtualisation/virtualbox-image.nix";
-            generator = "virtualboxOVA";
-          };
-          proxmox = {
-            module = "${nixpkgs}/nixos/modules/virtualisation/proxmox-image.nix";
-            generator = "VMA";
-          };
+        formats = {
+          virtualbox = "virtualboxOVA";
+          proxmox = "VMA";
         };
       in
       {
         systems = [ system ];
         flake = {
-          nixosConfigurations = builtins.mapAttrs mkNixosConfiguration configurations;
-          legacyPackages.${system} = builtins.mapAttrs mkNixosGenerator configurations;
+          nixosConfigurations = builtins.mapAttrs mkConfig formats;
+          packages.${system} = builtins.mapAttrs mkPackage formats;
         };
       }
     );
