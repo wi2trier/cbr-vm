@@ -22,6 +22,6 @@
     excludePackages = with pkgs; [ xterm ];
   };
   services.gnome.core-utilities.enable = false;
-  # Gnome themes
+  security.pam.services.gdm.enableGnomeKeyring = true;
   programs.dconf.enable = true;
 }
