@@ -1,7 +1,6 @@
 { pkgs, config, ... }:
 {
   home.packages = with pkgs; [
-    poetry
     python3
     maven
     gradle
@@ -12,6 +11,12 @@
     bash.enable = true;
     git.enable = true;
     chromium.enable = true;
+    poetry = {
+      enable = true;
+      settings = {
+        virtualenvs.in-project = true;
+      };
+    };
     neovim = {
       enable = true;
       viAlias = true;
