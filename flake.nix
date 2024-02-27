@@ -58,6 +58,7 @@
         formats = {
           virtualbox = "virtualboxOVA";
           proxmox = "VMA";
+          qemu = "vm";
         };
       in
       {
