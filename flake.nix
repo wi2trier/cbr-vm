@@ -56,7 +56,7 @@
         mkPackage = name: value: self.nixosConfigurations.${name}.config.system.build.${value};
 
         formats = {
-          virtualbox = "virtualboxOVA";
+          virtualbox = "virtualBoxOVA";
           proxmox = "VMA";
           qemu = "vm";
         };
