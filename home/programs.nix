@@ -1,11 +1,19 @@
 { pkgs, config, ... }:
 {
   home.packages = with pkgs; [
-    python3
     maven
     gradle
     jetbrains.idea-community
     jetbrains.pycharm-community
+    (writeShellScriptBin "python" ''
+      export LD_LIBRARY_PATH=${
+        lib.makeLibraryPath [
+          stdenv.cc.cc
+          zlib
+        ]
+      }
+      exec ${lib.getExe python} "$@"
+    '')
   ];
   programs = {
     bash.enable = true;
@@ -13,19 +21,9 @@
     chromium.enable = true;
     poetry = {
       enable = true;
-      package =
-        with pkgs;
-        writeShellScriptBin "poetry" ''
-          export LD_LIBRARY_PATH=${
-            lib.makeLibraryPath [
-              stdenv.cc.cc
-              zlib
-            ]
-          }
-          exec ${lib.getExe poetry} "$@"
-        '';
       settings = {
         virtualenvs.in-project = true;
+        virtualenvs.prefer-active-python = true;
       };
     };
     neovim = {
