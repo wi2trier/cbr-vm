@@ -5,14 +5,14 @@
     gradle
     jetbrains.idea-community
     jetbrains.pycharm-community
-    (writeShellScriptBin "python" ''
+    (writeShellScriptBin "python3" ''
       export LD_LIBRARY_PATH=${
         lib.makeLibraryPath [
           stdenv.cc.cc
           zlib
         ]
       }
-      exec ${lib.getExe python} "$@"
+      exec ${lib.getExe python3} "$@"
     '')
   ];
   programs = {
