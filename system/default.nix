@@ -2,6 +2,7 @@
   lib',
   lib,
   inputs,
+  pkgs,
   ...
 }:
 {
@@ -19,6 +20,12 @@
       allowUnfree = true;
     };
   };
+
+  # otherwise, python venvs will not work
+  environment.variables.LD_LIBRARY_PATH = lib.makeLibraryPath [
+    pkgs.stdenv.cc.cc
+    pkgs.zlib
+  ];
 
   nix = {
     nixPath = lib.mkForce [ "nixpkgs=flake:nixpkgs" ];
