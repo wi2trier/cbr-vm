@@ -5,15 +5,6 @@
     gradle
     jetbrains.idea-community
     jetbrains.pycharm-community
-    (writeShellScriptBin "python3" ''
-      export LD_LIBRARY_PATH=${
-        lib.makeLibraryPath [
-          stdenv.cc.cc
-          zlib
-        ]
-      }
-      exec ${lib.getExe python3} "$@"
-    '')
   ];
   programs = {
     bash.enable = true;
@@ -23,7 +14,6 @@
       enable = true;
       settings = {
         virtualenvs.in-project = true;
-        virtualenvs.prefer-active-python = true;
       };
     };
     neovim = {
