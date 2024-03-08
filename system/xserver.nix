@@ -20,6 +20,7 @@
       enable = true;
     };
     excludePackages = with pkgs; [ xterm ];
+    xkb.layout = "de";
   };
   services.gnome.core-utilities.enable = false;
   security.pam.services.gdm.enableGnomeKeyring = true;
