@@ -1,17 +1,18 @@
 # https://gist.github.com/hermannolafs/c1379a090350d2dc369aeabd3c0d8de3
 # https://nixos.wiki/wiki/Remote_Desktop
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 let
-  windowManager = pkgs.gnome.gnome-session;
+  windowManager = pkgs.gnome.gnome-remote-desktop;
 in
 {
   services.xrdp = {
     enable = true;
-    defaultWindowManager = lib.getExe' windowManager "gnome-session";
+    defaultWindowManager = "gnome-remote-desktop";
     openFirewall = true;
   };
 
   environment.systemPackages = [ windowManager ];
+  services.gnome.gnome-remote-desktop.enable = true;
 
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {

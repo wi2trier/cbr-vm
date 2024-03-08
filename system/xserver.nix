@@ -7,6 +7,7 @@
         nautilus
         gnome-system-monitor
         dconf-editor
+        gnome-tweaks
       ])
       ++ (with pkgs; [ gnome-console ]);
     gnome.excludePackages = with pkgs; [ gnome-tour ];
