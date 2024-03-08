@@ -18,6 +18,7 @@
     };
     displayManager.gdm = {
       enable = true;
+      # wayland = false;
     };
     excludePackages = with pkgs; [ xterm ];
     xkb.layout = "de";
