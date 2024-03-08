@@ -3,8 +3,8 @@
 { pkgs, lib, ... }:
 {
   services.xrdp = {
-    enable = false;
-    defaultWindowManager = lib.getExe' pkgs.gnome.gnome-session "gnome-session";
+    enable = true;
+    defaultWindowManager = lib.getExe' pkgs.xfce.xfce4-session "xfce4-session";
     openFirewall = true;
   };
 

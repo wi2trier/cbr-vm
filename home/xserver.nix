@@ -1,6 +1,5 @@
 { pkgs, lib, ... }:
 let
-  gnomeExtensions = with pkgs.gnomeExtensions; [ dash-to-panel ];
   desktopLinks = {
     cbrkit-docs = {
       url = "https://wi2trier.github.io/cbrkit/";
@@ -32,34 +31,7 @@ let
 in
 {
   home = {
-    packages = gnomeExtensions ++ (lib.mapAttrsToList mkDesktopLink desktopLinks);
+    packages = lib.mapAttrsToList mkDesktopLink desktopLinks;
   };
-  gtk = {
-    enable = true;
-    iconTheme.name = "Adwaita";
-    theme.name = "Adwaita";
-  };
-  # dconf watch /
-  dconf.settings = {
-    "org/gnome/shell" = {
-      disable-user-extensions = false;
-      enabled-extensions = map (ext: ext.extensionUuid) gnomeExtensions;
-      favorite-apps = [
-        "org.gnome.Nautilus.desktop"
-        "idea-community.desktop"
-        "pycharm-community.desktop"
-        "chromium-browser.desktop"
-      ] ++ map (name: "${name}.desktop") (builtins.attrNames desktopLinks);
-    };
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
-      enable-animations = false;
-    };
-    "org/gnome/nautilus/preferences" = {
-      default-folder-viewer = "list-view";
-    };
-    "org/gnome/desktop/wm/preferences" = {
-      button-layout = "appmenu:minimize,maximize,close";
-    };
-  };
+  xfconf.settings = { };
 }
