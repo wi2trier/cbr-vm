@@ -1,6 +1,6 @@
 # https://gist.github.com/hermannolafs/c1379a090350d2dc369aeabd3c0d8de3
 # https://nixos.wiki/wiki/Remote_Desktop
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   windowManager = pkgs.gnome.gnome-session;
 in
