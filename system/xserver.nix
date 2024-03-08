@@ -11,5 +11,4 @@
     excludePackages = with pkgs; [ xterm ];
     xkb.layout = "de";
   };
-  programs.xfconf.enable = true;
 }
