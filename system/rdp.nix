@@ -4,7 +4,7 @@
 {
   services.xrdp = {
     enable = true;
-    defaultWindowManager = lib.getExe pkgs.icewm;
+    defaultWindowManager = lib.getExe' pkgs.gnome.gnome-session "gnome-session";
     openFirewall = true;
   };
 
