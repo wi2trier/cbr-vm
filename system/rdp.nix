@@ -4,11 +4,9 @@
 {
   services.xrdp = {
     enable = true;
-    defaultWindowManager = "gnome-remote-desktop";
+    defaultWindowManager = "gnome-session";
     openFirewall = true;
   };
-
-  services.gnome.gnome-remote-desktop.enable = true;
 
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
