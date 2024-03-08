@@ -4,7 +4,7 @@
 {
   services.xrdp = {
     enable = true;
-    defaultWindowManager = lib.getExe' pkgs.xfce.xfce4-session "xfce4-session";
+    defaultWindowManager = lib.getExe' pkgs.xfce.xfce4-session "startxfce4";
     openFirewall = true;
   };
 
