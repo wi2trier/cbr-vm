@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+  environment.systemPackages = with pkgs.xfce; [
+    xfce4-docklike-plugin
+    xfce4-whiskermenu-plugin
+  ];
   services.xserver = {
     enable = true;
     desktopManager.xfce = {
