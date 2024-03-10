@@ -1,9 +1,10 @@
 { pkgs, lib, ... }:
 let
   # https://askubuntu.com/a/1045962
-  mkDesktopLink = (
-    name:
+  # https://specifications.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html
+  mkShortcut = (
     {
+      name,
       url,
       desktopName,
       icon,
@@ -17,25 +18,40 @@ let
       categories = [ "Network" ];
     }
   );
-  desktopLinks = builtins.mapAttrs mkDesktopLink {
-    cbrkit-docs = {
-      url = "https://wi2trier.github.io/cbrkit/";
-      desktopName = "CBRkit Docs";
-      icon = ../assets/cbrkit.png;
-    };
-    procake-docs = {
+  shortcuts = [
+    {
+      name = "procake-docs";
       url = "https://procake.pages.gitlab.rlp.net/procake-wiki/";
       desktopName = "ProCAKE Docs";
       icon = ../assets/procake.jpg;
-    };
-  };
+    }
+    {
+      name = "cbrkit-docs";
+      url = "https://wi2trier.github.io/cbrkit/";
+      desktopName = "CBRkit Docs";
+      icon = ../assets/cbrkit.png;
+    }
+    {
+      name = "eval-sheet";
+      url = ../cbrkit-eval.pdf;
+      desktopName = "Assignment Sheet";
+      icon = "x-office-presentation";
+    }
+    {
+      name = "eval-survey";
+      url = "https://tally.so/r/wQ5xel";
+      desktopName = "Feedback Survey";
+      icon = "microphone";
+    }
+  ];
   iniFormat = pkgs.formats.ini { listToValue = values: lib.concatStringsSep ";" values; };
   mkSystemLink = name: "/run/current-system/sw/share/applications/${name}.desktop";
   mkUserLink = name: "/etc/profiles/per-user/guest/share/applications/${name}.desktop";
+  mkShortcutLink = { name, ... }: mkUserLink name;
 in
 {
   home = {
-    packages = builtins.attrValues desktopLinks;
+    packages = builtins.map mkShortcut shortcuts;
   };
   xdg.configFile."xfce4/panel/docklike-3.rc".source = iniFormat.generate "docklike-config" {
     user = {
@@ -44,9 +60,7 @@ in
         (mkUserLink "chromium-browser")
         (mkUserLink "idea-community")
         (mkUserLink "pycharm-community")
-        (mkUserLink "procake-docs")
-        (mkUserLink "cbrkit-docs")
-      ];
+      ] ++ (map mkShortcutLink shortcuts);
     };
   };
   xfconf.settings = {
